@@ -46,3 +46,19 @@ func TryDotProduct() {
 	p := mat64.Dot(v, w)
 	fmt.Println(p)
 }
+
+func TryVecSub() {
+	v := mat64.NewVector(4, []float64{1, 2, 3, 4})
+	w := mat64.NewVector(4, []float64{1, 1, 1, 1})
+
+	v.SubVec(v, w)
+	fmt.Println(v)
+
+}
+
+func TryScaleVec() {
+	v := mat64.NewVector(4, []float64{1, 2, 3, 4})
+	v.ScaleVec(2, v)
+
+	fmt.Println(v)
+}
