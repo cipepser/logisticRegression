@@ -15,14 +15,14 @@ import (
 )
 
 var (
-	N   = 10  // 教師データの数
-	M   = 3   //特徴量の次元
-	eta = 0.1 // 学習率
+	N   = 1000 // 教師データの数
+	M   = 3    //特徴量の次元
+	eta = 0.1  // 学習率
 )
 
 // 真の分離平面 5x+3y=1
 func h(x1, x2 float64) float64 {
-	return 5*x1 + x2 - 1
+	return 2*x1 - 3*x2 - 1
 }
 
 // 特徴量
@@ -62,16 +62,17 @@ func main() {
 		x := phi(x1[i], x2[i])
 
 		p := myfunc.Sigmoid(mat64.Dot(w, x))
+		// fmt.Println(p)
 
-		fmt.Println(eta * (p - t[i]))
-		fmt.Println(x)
+		// fmt.Println(eta * (p - t[i]))
+		// fmt.Println(x)
 		x.ScaleVec(eta*(p-t[i]), x)
-		fmt.Println(x)
-		fmt.Println("------------")
+		// fmt.Println(x)
+		// fmt.Println("------------")
 		w.SubVec(w, x)
 
 		// eta *= float64(N) / (1 + float64(N))
-		eta *= 0.99
+		// eta *= 0.999999999999999
 	}
 
 	// plot
@@ -129,7 +130,8 @@ func main() {
 	p.Add(s)
 
 	line := plotter.NewFunction(func(x float64) float64 {
-		return -w.At(2, 0)/w.At(0, 0) - w.At(1, 0)*x/w.At(0, 0)
+		return -w.At(2, 0)/w.At(1, 0) - w.At(0, 0)*x/w.At(1, 0)
+		// return x + 1
 	})
 	line.Color = color.RGBA{G: 255, A: 255}
 	line.Width = vg.Points(2)
@@ -166,12 +168,17 @@ func main() {
 	}
 	fmt.Println(w)
 
-	fmt.Println(float64(correct) / float64(N))
+	fmt.Println("training data: ", float64(correct)/float64(N))
 
 	correct = 0
 	for i := 0; i < N; i++ {
 		x1[i] = 20*rand.Float64() - 10
 		x2[i] = 20*rand.Float64() - 10
+		if h(x1[i], x2[i]) > 0 {
+			t[i] = 1
+		} else {
+			t[i] = 0
+		}
 
 		x := phi(x1[i], x2[i])
 
@@ -188,6 +195,8 @@ func main() {
 	}
 	// fmt.Println(w)
 
-	fmt.Println(float64(correct) / float64(N))
+	fmt.Println("new data: ", float64(correct)/float64(N))
+
+	myfunc.TryScaleVec()
 
 }
