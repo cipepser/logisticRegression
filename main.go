@@ -48,7 +48,6 @@ func main() {
 			t[i] = 1
 		}
 	}
-	// fmt.Println(t)
 
 	// パラメータの初期化
 	ws := make([]float64, M)
@@ -62,17 +61,11 @@ func main() {
 		x := phi(x1[i], x2[i])
 
 		p := myfunc.Sigmoid(mat64.Dot(w, x))
-		// fmt.Println(p)
 
-		// fmt.Println(eta * (p - t[i]))
-		// fmt.Println(x)
 		x.ScaleVec(eta*(p-t[i]), x)
-		// fmt.Println(x)
-		// fmt.Println("------------")
 		w.SubVec(w, x)
 
-		// eta *= float64(N) / (1 + float64(N))
-		// eta *= 0.999999999999999
+		eta *= 0.999
 	}
 
 	// plot
@@ -82,17 +75,11 @@ func main() {
 	}
 
 	idx0 := make([]int, 0)
-	// cnt0 := 0
 	idx1 := make([]int, 0)
-	// cnt1 := 0
 	for i := 0; i < N; i++ {
 		if t[i] == 0 {
-			// idx0[cnt0] = i
-			// cnt0++
 			idx0 = append(idx0, i)
 		} else {
-			// idx1[cnt1] = i
-			// cnt1++
 			idx1 = append(idx1, i)
 		}
 	}
@@ -131,7 +118,6 @@ func main() {
 
 	line := plotter.NewFunction(func(x float64) float64 {
 		return -w.At(2, 0)/w.At(1, 0) - w.At(0, 0)*x/w.At(1, 0)
-		// return x + 1
 	})
 	line.Color = color.RGBA{G: 255, A: 255}
 	line.Width = vg.Points(2)
@@ -150,17 +136,12 @@ func main() {
 	// 判別
 	correct := 0
 	for i := 0; i < N; i++ {
-		// x1[i] = 4*rand.Float64() - 2
-		// x2[i] = 4*rand.Float64() - 2
-
 		x := phi(x1[i], x2[i])
 
 		label := 0
-		// fmt.Println(myfunc.Sigmoid(mat64.Dot(w, x)))
 		if myfunc.Sigmoid(mat64.Dot(w, x)) > 0.5 {
 			label = 1
 		}
-		// fmt.Println(label, t[i])
 
 		if t[i] == float64(label) {
 			correct++
@@ -183,20 +164,14 @@ func main() {
 		x := phi(x1[i], x2[i])
 
 		label := 0
-		// fmt.Println(myfunc.Sigmoid(mat64.Dot(w, x)))
 		if myfunc.Sigmoid(mat64.Dot(w, x)) > 0.5 {
 			label = 1
 		}
-		// fmt.Println(label, t[i])
 
 		if t[i] == float64(label) {
 			correct++
 		}
 	}
-	// fmt.Println(w)
 
 	fmt.Println("new data: ", float64(correct)/float64(N))
-
-	myfunc.TryScaleVec()
-
 }
