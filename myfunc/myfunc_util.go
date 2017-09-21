@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/cipepser/plot/myutil"
-	"github.com/gonum/matrix/mat64"
+	"gonum.org/v1/gonum/mat"
 )
 
 func Scatter() {
@@ -23,16 +23,16 @@ func Scatter() {
 }
 
 func TryMat() {
-	a := mat64.NewDense(2, 2, []float64{1, 2, 3, 4})
+	a := mat.NewDense(2, 2, []float64{1, 2, 3, 4})
 	fmt.Println(a)
 
-	b := mat64.NewDense(2, 2, []float64{1, 2, 3, 4})
+	b := mat.NewDense(2, 2, []float64{1, 2, 3, 4})
 	a.Add(a, b)
 	fmt.Println(a)
 }
 
 func TryVec() {
-	a := mat64.NewDense(2, 2, []float64{1, 2, 3, 4})
+	a := mat.NewDense(2, 2, []float64{1, 2, 3, 4})
 
 	b := a.ColView(1)
 	fmt.Println(b.At(0, 0))
@@ -41,15 +41,15 @@ func TryVec() {
 }
 
 func TryDotProduct() {
-	v := mat64.NewVector(4, []float64{1, 2, 3, 4})
-	w := mat64.NewVector(4, []float64{1, 2, 3, 4})
-	p := mat64.Dot(v, w)
+	v := mat.NewVecDense(4, []float64{1, 2, 3, 4})
+	w := mat.NewVecDense(4, []float64{1, 2, 3, 4})
+	p := mat.Dot(v, w)
 	fmt.Println(p)
 }
 
 func TryVecSub() {
-	v := mat64.NewVector(4, []float64{1, 2, 3, 4})
-	w := mat64.NewVector(4, []float64{1, 1, 1, 1})
+	v := mat.NewVecDense(4, []float64{1, 2, 3, 4})
+	w := mat.NewVecDense(4, []float64{1, 1, 1, 1})
 
 	v.SubVec(v, w)
 	fmt.Println(v)
@@ -57,7 +57,7 @@ func TryVecSub() {
 }
 
 func TryScaleVec() {
-	v := mat64.NewVector(4, []float64{1, 2, 3, 4})
+	v := mat.NewVecDense(4, []float64{1, 2, 3, 4})
 	v.ScaleVec(2, v)
 
 	fmt.Println(v)

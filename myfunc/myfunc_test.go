@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/gonum/matrix/mat64"
+	"gonum.org/v1/gonum/mat"
 )
 
 func TestSigmoid(t *testing.T) {
@@ -19,7 +19,7 @@ func TestSigmoid(t *testing.T) {
 
 func TestVec2Slice(t *testing.T) {
 	expected := []float64{1, 2, 3, 4}
-	v := mat64.NewVector(len(expected), expected)
+	v := mat.NewVecDense(len(expected), expected)
 
 	actual := Vec2Slice(v)
 

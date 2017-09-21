@@ -9,10 +9,10 @@ import (
 	"time"
 
 	"./myfunc"
-	"github.com/gonum/matrix/mat64"
 	"github.com/gonum/plot"
 	"github.com/gonum/plot/plotter"
 	"github.com/gonum/plot/vg"
+	"gonum.org/v1/gonum/mat"
 )
 
 var (
@@ -29,8 +29,8 @@ func h(x1, x2 float64) float64 {
 }
 
 // 特徴量
-func phi(x1, x2 float64) *mat64.Vector {
-	return mat64.NewVector(M, []float64{1, x1, x2})
+func phi(x1, x2 float64) *mat.VecDense {
+	return mat.NewVecDense(M, []float64{1, x1, x2})
 }
 
 func main() {
@@ -57,13 +57,12 @@ func main() {
 	for i := range ws {
 		ws[i] = rand.Float64()
 	}
-	w := mat64.NewVector(len(ws), ws)
+	w := mat.NewVecDense(len(ws), ws)
 
 	// 学習
 	for i := 0; i < N; i++ {
 		x := phi(x1[i], x2[i])
-
-		p := myfunc.Sigmoid(mat64.Dot(w, x))
+		p := myfunc.Sigmoid(mat.Dot(w, x))
 
 		x.ScaleVec(eta*(p-t[i]), x)
 		w.SubVec(w, x)
@@ -142,7 +141,7 @@ func main() {
 		x := phi(x1[i], x2[i])
 
 		label := 0
-		if myfunc.Sigmoid(mat64.Dot(w, x)) > 0.5 {
+		if myfunc.Sigmoid(mat.Dot(w, x)) > 0.5 {
 			label = 1
 		}
 
@@ -167,7 +166,7 @@ func main() {
 		x := phi(x1[i], x2[i])
 
 		label := 0
-		if myfunc.Sigmoid(mat64.Dot(w, x)) > 0.5 {
+		if myfunc.Sigmoid(mat.Dot(w, x)) > 0.5 {
 			label = 1
 		}
 
